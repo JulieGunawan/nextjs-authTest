@@ -3,6 +3,7 @@ import Link from "next/link";
 import React, { useEffect } from "react";
 import {useRouter} from "next/navigation";
 import {axios} from "axios";
+import LoadingSpinner from "../components/loadingSpinner";
 
 
 
@@ -14,6 +15,8 @@ export default function Signup() {
     username: "",
   });
   const [buttonDisabled, setButtonDisabled] = React.useState(false);
+
+  const [loading, setLoading] = React.useState(false);
 
   const onSignup = async() => {
 
@@ -30,7 +33,8 @@ export default function Signup() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2 gap-2">
       <div className="w-full max-w-md" >
-        <h1 className="text-2xl text-center">Signup</h1>
+        {loading ? <LoadingSpinner /> : 
+          <h1 className="text-2xl text-center">{loading ? "Processing" : "Signup"}</h1> }
         <hr className="mb-4"/>
         <div className="w-full">
           <label htmlFor="username" className="text-left block">username</label>
