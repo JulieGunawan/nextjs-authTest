@@ -26,7 +26,7 @@ export default function Signup() {
       setButtonDisabled(true);
     }
   },[user]);
-  
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2 gap-2">
       <div className="w-full max-w-md" >
@@ -66,8 +66,11 @@ export default function Signup() {
           />
         </div>
         <div className="w-full flex justify-between">
-          <button onClick={onSignup} disabled={buttonDisabled} className="px-4 py-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 hover:bg-black hover:text-white">
-            Signup
+          <button onClick={onSignup} 
+            disabled={buttonDisabled} 
+            className={`px-4 py-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 hover:bg-black hover:text-white ${buttonDisabled ? "opacity-50 cursor-not-allowed" : ""}`}
+          >
+           Signup
           </button>
           <Link href="/login" className="px-4 py-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 hover:bg-black hover:text-white">Visit Login</Link>
         </div>
