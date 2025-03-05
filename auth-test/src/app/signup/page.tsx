@@ -2,8 +2,9 @@
 import Link from "next/link";
 import React, { useEffect } from "react";
 import {useRouter} from "next/navigation";
-import {axios} from "axios";
+import axios from "axios";
 import LoadingSpinner from "../components/loadingSpinner";
+import toast from "react-hot-toast";
 
 
 
@@ -19,7 +20,20 @@ export default function Signup() {
   const [loading, setLoading] = React.useState(false);
 
   const onSignup = async() => {
-
+    console.log("button clicked")
+    try{
+      setLoading(true);
+      const response = await axios.post("/api/users/signup", user);
+      console.log(response.data);
+      toast.success("User is successfully created");
+      router.push("/login");
+    } catch (err) {
+      console.log(err);
+      const error = err as Error;
+      toast.error("Sign up failed. " + error.message );
+    } finally {
+      setLoading(false);
+    }
   }
   
   useEffect(() => {
