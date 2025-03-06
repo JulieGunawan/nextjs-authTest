@@ -2,11 +2,11 @@ import { connectDB } from "@/dbConfig/dbConfig";
 import User from "@/models/userModel";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-
+import jwt from "jsonwebtoken";
 
 connectDB();
 
-export async function GET(request: NextRequest) {
+export async function POST(request: NextRequest) {
   try{
     const reqBody = await request.json();
     const {email, password} = reqBody;
@@ -25,7 +25,25 @@ export async function GET(request: NextRequest) {
     }   
 
     //create token data
-    return NextResponse.json({message: "User is found", success:true, user}, {status: 200});
+    const tokenData = {
+      id: user._id,
+      username: user.username,
+      email: user.email
+    }
+
+    //create token
+    const token = await jwt.sign(tokenData, 
+        process.env.TOKEN_SECRET!, {expiresIn: "1h"}
+    );
+    const response = NextResponse.json({
+      message:"Login successful",
+      success: true,
+    })
+    response.cookies.set("token", token, {
+      httpOnly: true,
+    })
+
+    return response;
   } catch (err) {
     const error = err as Error;
     return NextResponse.json({error: error.message}, {status: 500})
